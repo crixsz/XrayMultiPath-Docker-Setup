@@ -20,35 +20,49 @@ if ! command_exists acme.sh; then
     echo "--> acme.sh installed successfully."
 fi
 
-# 2. Prompt for domain name
+# 2. Prompt for user details
 read -p "Please enter your domain name (e.g., your.domain.com): " domain
 if [ -z "$domain" ]; then
     echo "Error: Domain name cannot be empty."
     exit 1
 fi
 
-echo "--> Using domain: $domain"
+read -p "Please enter your email address (for ZeroSSL registration): " email
+if [ -z "$email" ]; then
+    echo "Error: Email address cannot be empty."
+    exit 1
+fi
 
-# 3. Create the certificate directory
+echo "--> Using domain: $domain"
+echo "--> Using email: $email"
+
+# 3. Clean up previous certs and register account
+echo "--> Removing any existing certificate for $domain to avoid conflicts..."
+~/.acme.sh/acme.sh --remove -d "$domain" --ecc || true
+
+echo "--> Registering account with ZeroSSL..."
+~/.acme.sh/acme.sh --register-account -m "$email" --server zerossl
+
+# 4. Create the certificate directory
 mkdir -p ./xray-certs
 if [ $? -ne 0 ]; then
     echo "Error: Could not create the ./xray-certs directory."
     exit 1
 fi
 
-# 4. Issue the certificate using the standalone server
-echo "--> Issuing certificate using acme.sh standalone server..."
+# 5. Issue the certificate using the standalone server
+echo "--> Issuing ECC certificate using acme.sh standalone server..."
 echo "--> Note: This requires port 80 to be free. Stop any running webservers if necessary."
 
-~/.acme.sh/acme.sh --issue -d "$domain" --standalone
+~/.acme.sh/acme.sh --issue --ecc -d "$domain" --standalone
 if [ $? -ne 0 ]; then
     echo "Error: Certificate issuance failed. Please check that your domain is pointing to this server's IP and that port 80 is not in use."
     exit 1
 fi
 
-# 5. Install the certificate to the target directory
+# 6. Install the certificate to the target directory
 echo "--> Installing certificate to ./xray-certs/"
-~/.acme.sh/acme.sh --install-cert -d "$domain" \
+~/.acme.sh/acme.sh --install-cert --ecc -d "$domain" \
 --fullchain-file ./xray-certs/xray.crt \
 --key-file ./xray-certs/xray.key
 if [ $? -ne 0 ]; then
