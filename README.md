@@ -30,8 +30,8 @@ The two containers communicate over a dedicated Docker network, ensuring they ca
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/crixsz/XrayMultiPath.git
-cd XrayMultiPath
+git clone https://github.com/crixsz/XrayMultiPath-Docker-Setup.git
+cd XrayMultiPath-Docker-Setup
 ```
 
 ### 2. Obtain SSL Certificates
@@ -75,7 +75,39 @@ The script provides the following options:
 
 ## Client Configurations
 
-Your server is now running. Use the same client configurations as before, but replace `yourip` with your server's domain name.
+Your server is now running. Replace `your.domain.com` with your actual domain name in the configurations below.
 
-*(The existing client configuration examples would follow here)
+### Cloudflare Warp Route (Port 80 & 443)
+
+**VLESS-WS (Port 80)**
 ```
+vless://5d871382-b2ec-4d82-b5b8-712498a348e5@your.domain.com:80?security=&type=ws&path=/vless-ws&host=your.domain.com&encryption=none
+```
+
+**VLESS-WS (Port 443 - TLS)**
+```
+vless://5d871382-b2ec-4d82-b5b8-712498a348e5@your.domain.com:443?security=tls&sni=your.domain.com&allowInsecure=1&type=ws&path=/vless-ws&encryption=none
+```
+
+**TROJAN-WS (Port 80)**
+```
+trojan://trojanaku@your.domain.com:80?security=&type=ws&path=/trojan-ws&host=your.domain.com#
+```
+
+**TROJAN-WS (Port 443 - TLS)**
+```
+trojan://trojanaku@your.domain.com:443?security=&type=ws&path=/trojan-ws&host=your.domain.com#
+```
+
+### Direct Route (Port 80)
+
+**TROJAN-WS (Direct)**
+```
+trojan://trojanaku@your.domain.com:80?security=&type=ws&path=/direct-trojan&host=your.domain.com#
+```
+
+**VLESS-WS (Direct)**
+```
+vless://5d871382-b2ec-4d82-b5b8-712498a348e5@your.domain.com:80?security=&type=ws&path=/direct-vless&host=your.domain.com&encryption=none
+```
+
