@@ -10,14 +10,16 @@ show_menu() {
     echo "1) Install and Start Services"
     echo "2) Stop and Remove Services"
     echo "3) View Service Logs"
-    echo "4) Register WARP Client"
-    echo "5) Exit"
+    echo "4) Exit"
     echo "-------------------------------------"
-    read -p "Please select an option [1-5]: " option
+    read -p "Please select an option [1-4]: " option
 }
 
 # Function to install and start the services
 install_services() {
+    # First, attempt to register WARP
+    register_warp
+
     echo "--> Pulling latest images..."
     if ! docker compose pull; then
         echo "Error: Failed to pull images. Please check your Docker and Docker Compose installation."
@@ -89,9 +91,6 @@ while true; do
             view_logs
             ;;
         4)
-            register_warp
-            ;;
-        5)
             echo "Exiting..."
             exit 0
             ;;
