@@ -69,7 +69,7 @@ view_logs() {
 register_warp() {
     set -x # Enable shell debugging
     echo "--> Running WARP registration..."
-    if ! docker compose run --rm --entrypoint "" warp warp-cli register; then
+    if ! docker compose run --rm --entrypoint "" warp warp-cli registration new; then
         echo "Error: Failed to register WARP client."
         read -p "Press Enter to continue..."
         set +x # Disable shell debugging
