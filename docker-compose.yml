@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  xray-nginx:
+    build: .
+    container_name: xray-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./xray-certs:/root
+    depends_on:
+      - warp
+    networks:
+      - xray-network
+
+  warp:
+    image: ghcr.io/aleskxyz/warp-svc:latest
+    container_name: warp
+    restart: always
+    volumes:
+      - ./warp-config:/var/lib/cloudflare-warp
+    networks:
+      - xray-network
+
+networks:
+  xray-network:
+
+volumes:
+  xray-certs:
+  warp-config:
