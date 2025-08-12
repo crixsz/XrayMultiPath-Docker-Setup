@@ -12,7 +12,7 @@ This repository provides a Docker-based setup for a powerful and flexible proxy 
 
 ## Prerequisites
 
-- **Docker & Docker Compose:** You must have both installed on your system.
+- **Docker & Docker Compose V2:** You must have both installed on your system.
 - **Domain Name:** You need a domain name pointing to your server's IP address.
 - **Git:** Required to clone the repository.
 - **Curl:** Required by the installer to download `acme.sh`.

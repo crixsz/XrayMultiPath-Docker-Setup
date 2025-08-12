@@ -17,7 +17,7 @@ show_menu() {
 # Function to install and start the services
 install_services() {
     echo "--> Building and starting containers..."
-    if ! docker-compose up --build -d; then
+    if ! docker compose up --build -d; then
         echo "Error: Failed to start services. Please check your Docker and Docker Compose installation."
         read -p "Press Enter to continue..."
         return
@@ -29,7 +29,7 @@ install_services() {
 # Function to stop and remove the services
 uninstall_services() {
     echo "--> Stopping and removing containers, networks, and volumes..."
-    if ! docker-compose down -v; then
+    if ! docker compose down -v; then
         echo "Error: Failed to stop services. Please check your Docker and Docker Compose installation."
         read -p "Press Enter to continue..."
         return
@@ -41,7 +41,7 @@ uninstall_services() {
 # Function to view the logs
 view_logs() {
     echo "--> Fetching logs... (Press Ctrl+C to exit)"
-    docker-compose logs -f
+    docker compose logs -f
     read -p "Press Enter to continue..."
 }
 
