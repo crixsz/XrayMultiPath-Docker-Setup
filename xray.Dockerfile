@@ -28,9 +28,9 @@ COPY Xray/none.json /usr/local/etc/xray/none.json
 EXPOSE 80 443
 
 # Add an entrypoint script to start services
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY entrypoint-xray.sh /entrypoint-xray.sh
+RUN chmod +x /entrypoint-xray.sh
 
 # Set the entrypoint
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint-xray.sh"]
 

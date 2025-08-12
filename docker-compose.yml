@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   xray-nginx:
-    build: .
+    build:
+      context: .
+      dockerfile: xray.Dockerfile
     container_name: xray-nginx
     restart: always
     ports:
@@ -16,11 +18,15 @@ services:
       - xray-network
 
   warp:
-    image: ghcr.io/aleskxyz/warp-svc:latest
+    build:
+      context: .
+      dockerfile: warp.Dockerfile
     container_name: warp
     restart: always
     volumes:
       - ./warp-config:/var/lib/cloudflare-warp
+    cap_add:
+      - NET_ADMIN
     networks:
       - xray-network
 
