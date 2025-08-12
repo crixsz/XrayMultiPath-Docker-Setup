@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Check if the WARP client is registered
