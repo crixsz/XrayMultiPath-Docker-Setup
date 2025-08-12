@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # Function to display the menu
@@ -17,6 +18,12 @@ show_menu() {
 
 # Function to install and start the services
 install_services() {
+    echo "--> Pulling latest images..."
+    if ! docker compose pull; then
+        echo "Error: Failed to pull images. Please check your Docker and Docker Compose installation."
+        read -p "Press Enter to continue..."
+        return
+    fi
     echo "--> Building and starting containers..."
     if ! docker compose up --build -d; then
         echo "Error: Failed to start services. Please check your Docker and Docker Compose installation."
@@ -29,11 +36,21 @@ install_services() {
 
 # Function to stop and remove the services
 uninstall_services() {
-    echo "--> Stopping and removing containers, networks, and volumes..."
-    if ! docker compose down -v; then
-        echo "Error: Failed to stop services. Please check your Docker and Docker Compose installation."
-        read -p "Press Enter to continue..."
-        return
+    read -p "Do you want to remove the images as well? [y/N]: " remove_images
+    if [[ "$remove_images" == "y" || "$remove_images" == "Y" ]]; then
+        echo "--> Stopping and removing containers, networks, volumes, and images..."
+        if ! docker compose down --rmi all -v; then
+            echo "Error: Failed to stop services. Please check your Docker and Docker Compose installation."
+            read -p "Press Enter to continue..."
+            return
+        fi
+    else
+        echo "--> Stopping and removing containers, networks, and volumes..."
+        if ! docker compose down -v; then
+            echo "Error: Failed to stop services. Please check your Docker and Docker Compose installation."
+            read -p "Press Enter to continue..."
+            return
+        fi
     fi
     echo "--> All services and associated data have been removed."
     read -p "Press Enter to continue..."
