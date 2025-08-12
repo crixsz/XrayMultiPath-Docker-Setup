@@ -68,7 +68,14 @@ view_logs() {
 # Function to register the WARP client
 register_warp() {
     echo "--> Running WARP registration..."
-    if ! docker compose run --rm --entrypoint "" warp warp-cli registration new; then
+    if ! docker compose run --rm warp bash -c "
+        /usr/bin/warp-svc & 
+        WARP_SVC_PID=$! ; 
+        sleep 1 ; 
+        warp-cli registration new ; 
+        kill $WARP_SVC_PID ; 
+        wait $WARP_SVC_PID 
+    "; then
         echo "Error: Failed to register WARP client."
         read -p "Press Enter to continue..."
         return
