@@ -88,7 +88,7 @@
         "network": "ws",
         "security": "none",
         "wsSettings": {
-          "acceptProxyProtocol": true,
+          "acceptProxyProtocol": false,
           "path": "/vmess-ws"
         }
       }
@@ -114,7 +114,7 @@
       "streamSettings": {
         "network": "ws",
         "wsSettings": {
-          "acceptProxyProtocol": true,
+          "acceptProxyProtocol": false,
           "path": "/trojan-ws"
         }
       }
@@ -142,7 +142,7 @@
         "network": "ws",
         "security": "none",
         "wsSettings": {
-          "acceptProxyProtocol": true,
+          "acceptProxyProtocol": false,
           "path": "/vless-ws"
         }
       }
