@@ -5,72 +5,56 @@ This repository provides a Docker-based setup for a powerful and flexible proxy 
 ## Key Features
 
 - **Containerized:** All services run in isolated Docker containers, managed by Docker Compose.
-- **Easy Management:** Includes a simple menu script to install, uninstall, and manage the services.
+- **Automated SSL:** Includes an installer script to automatically generate SSL certificates using `acme.sh`.
+- **Easy Management:** A simple menu script handles starting, stopping, and managing the services.
 - **Dual Routing:** Simultaneously supports direct connections and connections routed through Cloudflare WARP.
 - **Multiple Protocols:** Comes pre-configured with VLESS and Trojan protocols over WebSocket.
-- **Persistent SSL:** SSL certificates are stored in a Docker volume to persist across container restarts.
-
-## How It Works
-
-This setup consists of two main services orchestrated by `docker-compose`:
-
-1.  **`xray-nginx`:** A custom-built Docker container that runs both Nginx and the multiple Xray services. Nginx acts as a reverse proxy on ports 80 and 443, directing traffic to the correct Xray instance based on the requested WebSocket path.
-2.  **`warp`:** A container running the Cloudflare WARP service, which provides a SOCKS5 proxy. The main Xray configuration is set up to route traffic through this container.
-
-The two containers communicate over a dedicated Docker network, ensuring they can securely connect to each other.
 
 ## Prerequisites
 
-- **Docker:** You must have Docker installed on your system. [Install Docker](https://docs.docker.com/engine/install/)
-- **Docker Compose:** You must have Docker Compose installed. [Install Docker Compose](https://docs.docker.com/compose/install/)
-- **Domain Name:** You need a domain name pointing to your server's IP address for SSL to work correctly.
-- **Git:** You need git to clone the repository.
+- **Docker & Docker Compose:** You must have both installed on your system.
+- **Domain Name:** You need a domain name pointing to your server's IP address.
+- **Git:** Required to clone the repository.
+- **Curl:** Required by the installer to download `acme.sh`.
 
 ## How to Run
 
-### 1. Clone the Repository
+### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/crixsz/XrayMultiPath-Docker-Setup.git
 cd XrayMultiPath-Docker-Setup
 ```
 
-### 2. Obtain SSL Certificates
-Before starting the services, you need to place your SSL certificate and key files in a directory named `xray-certs`. The container will mount this directory to `/root`, where the Xray configuration expects to find them.
-
-Create the directory:
-```bash
-mkdir xray-certs
-```
-
-Place your full chain certificate as `xray.crt` and your private key as `xray.key` inside the `xray-certs` directory.
-
-**Example using `acme.sh`:**
-If you use `acme.sh`, you can issue a certificate and copy it to the correct location like this:
-```bash
-# Install acme.sh
-# curl https://get.acme.sh | sh
-~/.acme.sh/acme.sh --issue -d your.domain.com --standalone
-~/.acme.sh/acme.sh --install-cert -d your.domain.com \
---fullchain-file ./xray-certs/xray.crt \
---key-file ./xray-certs/xray.key
-```
-
-### 3. Use the Management Script
-With your certificates in place, you can use the `menu.sh` script to manage the application.
+### Step 2: Run the Installer for SSL Certificates
+The installer script will handle the generation of your SSL certificates.
 
 First, make the script executable:
+```bash
+chmod +x installer.sh
+```
+
+Then, run the installer and follow the prompts:
+```bash
+./installer.sh
+```
+The script will ask for your domain name and automatically generate the necessary `xray.crt` and `xray.key` files, placing them in the `./xray-certs` directory.
+
+### Step 3: Use the Management Script
+Once the certificates are generated, you can use the `menu.sh` script to manage the application.
+
+Make the menu script executable:
 ```bash
 chmod +x menu.sh
 ```
 
-Then, run the script:
+Then, run the script to start the services:
 ```bash
 ./menu.sh
 ```
 
-The script provides the following options:
+The menu provides the following options:
 - **Install and Start Services:** Builds and starts the Docker containers.
-- **Stop and Remove Services:** Stops and removes all containers, networks, and volumes created by this setup.
+- **Stop and Remove Services:** Stops and removes all containers, networks, and volumes.
 - **View Service Logs:** Tails the logs from the running containers.
 
 ## Client Configurations
@@ -110,4 +94,3 @@ trojan://trojanaku@your.domain.com:80?security=&type=ws&path=/direct-trojan&host
 ```
 vless://5d871382-b2ec-4d82-b5b8-712498a348e5@your.domain.com:80?security=&type=ws&path=/direct-vless&host=your.domain.com&encryption=none
 ```
-
