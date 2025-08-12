@@ -1,3 +1,4 @@
+
 # XrayMultiPath with Docker
 
 This repository provides a Docker-based setup for a powerful and flexible proxy server using Xray-core, Nginx, and Cloudflare WARP. The primary feature is a "multi-path" configuration that allows routing traffic through either a direct connection or via Cloudflare WARP for enhanced privacy.
@@ -47,15 +48,22 @@ Make the menu script executable:
 chmod +x menu.sh
 ```
 
-Then, run the script to start the services:
+Then, run the script:
 ```bash
 ./menu.sh
 ```
+
+### Step 4: Register the WARP Client
+Before starting the services, you need to register the WARP client. Select option 4 from the menu to do this. This only needs to be done once.
+
+### Step 5: Start the Services
+Select option 1 from the menu to build and start the Docker containers.
 
 The menu provides the following options:
 - **Install and Start Services:** Builds and starts the Docker containers.
 - **Stop and Remove Services:** Stops and removes all containers, networks, and volumes.
 - **View Service Logs:** Tails the logs from the running containers.
+- **Register WARP Client:** Registers the WARP client.
 
 ## Client Configurations
 

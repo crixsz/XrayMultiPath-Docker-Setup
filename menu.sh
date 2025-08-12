@@ -9,9 +9,10 @@ show_menu() {
     echo "1) Install and Start Services"
     echo "2) Stop and Remove Services"
     echo "3) View Service Logs"
-    echo "4) Exit"
+    echo "4) Register WARP Client"
+    echo "5) Exit"
     echo "-------------------------------------"
-    read -p "Please select an option [1-4]: " option
+    read -p "Please select an option [1-5]: " option
 }
 
 # Function to install and start the services
@@ -45,6 +46,18 @@ view_logs() {
     read -p "Press Enter to continue..."
 }
 
+# Function to register the WARP client
+register_warp() {
+    echo "--> Running WARP registration..."
+    if ! docker compose run --rm warp warp-cli register; then
+        echo "Error: Failed to register WARP client."
+        read -p "Press Enter to continue..."
+        return
+    fi
+    echo "--> WARP client registered successfully."
+    read -p "Press Enter to continue..."
+}
+
 # Main loop
 while true; do
     show_menu
@@ -59,6 +72,9 @@ while true; do
             view_logs
             ;;
         4)
+            register_warp
+            ;;
+        5)
             echo "Exiting..."
             exit 0
             ;;
