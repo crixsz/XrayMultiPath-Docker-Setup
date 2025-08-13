@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Wait for the WARP service to be ready
-while [ ! -S /var/run/warp.sock ]; do
-    echo "Waiting for WARP service..."
-    sleep 1
-done
+# while [ ! -S /var/run/warp.sock ]; do
+#     echo "Waiting for WARP service..."
+#     sleep 1
+# done
 
 # Start Nginx in the background
 nginx -g 'daemon off;' &
