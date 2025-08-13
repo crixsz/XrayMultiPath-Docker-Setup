@@ -239,12 +239,18 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Create certificate directory
-print_info "Creating certificate directory..."
-mkdir -p ./xray-certs
-if [ $? -ne 0 ]; then
-    print_error "Could not create the ./xray-certs directory."
-    exit 1
+# Create certificate directory if it doesn't exist
+print_info "Checking certificate directory..."
+if [ ! -d "./xray-certs" ]; then
+    print_info "Creating ./xray-certs directory..."
+    mkdir -p ./xray-certs
+    if [ $? -ne 0 ]; then
+        print_error "Could not create the ./xray-certs directory."
+        exit 1
+    fi
+    print_success "Certificate directory created successfully."
+else
+    print_success "Certificate directory already exists."
 fi
 
 # Issue the certificate
