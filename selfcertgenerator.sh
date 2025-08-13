@@ -28,11 +28,14 @@ command_exists() {
 
 # Function to validate domain format
 validate_domain() {
-    if [[ $1 =~ ^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$ ]]; then
-        return 0
-    else
-        return 1
+    # Allow subdomains, main domains, and international domains
+    if [[ $1 =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$ ]]; then
+        # Additional checks
+        if [[ ${#1} -le 253 ]] && [[ ! $1 =~ \.\. ]] && [[ ! $1 =~ ^- ]] && [[ ! $1 =~ -$ ]]; then
+            return 0
+        fi
     fi
+    return 1
 }
 
 # Function to validate email format
