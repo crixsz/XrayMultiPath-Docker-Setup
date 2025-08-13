@@ -259,13 +259,20 @@ fi
 # Issue the certificate
 print_info "Issuing SSL certificate..."
 print_warning "This may take a few minutes. Please be patient..."
-~/.acme.sh/acme.sh --issue --ecc -d "$domain" --standalone
+~/.acme.sh/acme.sh --issue --ecc -d "$domain" --standalone --force
 if [ $? -ne 0 ]; then
     print_error "Certificate issuance failed!"
-    print_info "Common causes:"
-    print_info "• Domain is not pointing to this server"
-    print_info "• Port 80 is blocked by firewall"
-    print_info "• Another service is using port 80"
+    print_warning "Running with debug information to help diagnose the issue..."
+    echo
+    print_info "Attempting to get more detailed error information:"
+    ~/.acme.sh/acme.sh --issue --ecc -d "$domain" --standalone --force --debug 2>&1 | tail -20
+    echo
+    print_info "Common causes and solutions:"
+    print_info "• Domain is not pointing to this server - Check DNS settings"
+    print_info "• Port 80 is blocked by firewall - Open port 80 temporarily"
+    print_info "• Another service is using port 80 - Stop web servers (nginx, apache, etc.)"
+    print_info "• Rate limiting - Wait before trying again"
+    print_info "• Existing certificates conflict - Check ~/.acme.sh/ directory"
     exit 1
 fi
 
