@@ -26,17 +26,17 @@ git clone https://github.com/crixsz/XrayMultiPath-Docker-Setup.git
 cd XrayMultiPath-Docker-Setup
 ```
 
-### Step 2: Run the Installer for SSL Certificates
-The installer script will handle the generation of your SSL certificates.
+### Step 2: Generate SSL Certificates
+The `selfcertgenerator.sh` script will handle the generation of your SSL certificates.
 
 First, make the script executable:
 ```bash
-chmod +x installer.sh
+chmod +x selfcertgenerator.sh
 ```
 
-Then, run the installer and follow the prompts:
+Then, run the script and follow the prompts:
 ```bash
-./installer.sh
+./selfcertgenerator.sh
 ```
 The script will ask for your domain name and automatically generate the necessary `xray.crt` and `xray.key` files, placing them in the `./xray-certs` directory.
 
@@ -53,17 +53,11 @@ Then, run the script:
 ./menu.sh
 ```
 
-### Step 4: Register the WARP Client
-Before starting the services, you need to register the WARP client. Select option 4 from the menu to do this. This only needs to be done once.
-
-### Step 5: Start the Services
-Select option 1 from the menu to build and start the Docker containers.
-
 The menu provides the following options:
 - **Install and Start Services:** Builds and starts the Docker containers.
 - **Stop and Remove Services:** Stops and removes all containers, networks, and volumes.
 - **View Service Logs:** Tails the logs from the running containers.
-- **Register WARP Client:** Registers the WARP client.
+- **Exit:** Exits the menu.
 
 ## Client Configurations
 
