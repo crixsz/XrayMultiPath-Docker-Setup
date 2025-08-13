@@ -53,7 +53,9 @@
         "network": "tcp",
         "security": "xtls",
         "xtlsSettings": {
-          "alpn": ["http/1.1"],
+          "alpn": [
+            "http/1.1"
+          ],
           "certificates": [
             {
               "certificateFile": "/root/xray.crt",
@@ -88,7 +90,7 @@
         "network": "ws",
         "security": "none",
         "wsSettings": {
-          "acceptProxyProtocol": false,
+          "acceptProxyProtocol": true,
           "path": "/vmess-ws"
         }
       }
@@ -114,7 +116,7 @@
       "streamSettings": {
         "network": "ws",
         "wsSettings": {
-          "acceptProxyProtocol": false,
+          "acceptProxyProtocol": true,
           "path": "/trojan-ws"
         }
       }
@@ -142,7 +144,7 @@
         "network": "ws",
         "security": "none",
         "wsSettings": {
-          "acceptProxyProtocol": false,
+          "acceptProxyProtocol": true,
           "path": "/vless-ws"
         }
       }
@@ -225,18 +227,24 @@
         "outboundTag": "blocked"
       },
       {
-        "inboundTag": ["api"],
+        "inboundTag": [
+          "api"
+        ],
         "outboundTag": "api",
         "type": "field"
       },
       {
         "type": "field",
         "outboundTag": "blocked",
-        "protocol": ["bittorrent"]
+        "protocol": [
+          "bittorrent"
+        ]
       },
       {
         "type": "field",
-        "domain": ["google.com"],
+        "domain": [
+          "google.com"
+        ],
         "network": "udp,tcp",
         "outboundTag": "Freedom"
       },
@@ -249,7 +257,9 @@
   },
   "stats": {},
   "api": {
-    "services": ["StatsService"],
+    "services": [
+      "StatsService"
+    ],
     "tag": "api"
   },
   "policy": {
