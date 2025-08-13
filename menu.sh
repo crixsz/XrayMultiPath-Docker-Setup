@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Function to display the menu
@@ -17,15 +16,6 @@ show_menu() {
 
 # Function to install and start the services
 install_services() {
-    # First, attempt to register WARP
-    register_warp
-
-    echo "--> Pulling latest images..."
-    if ! docker compose pull; then
-        echo "Error: Failed to pull images. Please check your Docker and Docker Compose installation."
-        read -p "Press Enter to continue..."
-        return
-    fi
     echo "--> Building and starting containers..."
     if ! docker compose up --build -d; then
         echo "Error: Failed to start services. Please check your Docker and Docker Compose installation."
@@ -63,21 +53,6 @@ view_logs() {
     echo "--> Fetching logs... (Press Ctrl+C to exit)"
     docker compose logs -f
     read -p "Press Enter to continue..."
-}
-
-# Function to register the WARP client
-register_warp() {
-    set -x # Enable shell debugging
-    echo "--> Running WARP registration..."
-    if ! docker compose run --rm --entrypoint "" warp warp-cli registration new; then
-        echo "Error: Failed to register WARP client."
-        read -p "Press Enter to continue..."
-        set +x # Disable shell debugging
-        return
-    fi
-    echo "--> WARP client registered successfully."
-    read -p "Press Enter to continue..."
-    set +x # Disable shell debugging
 }
 
 # Main loop
